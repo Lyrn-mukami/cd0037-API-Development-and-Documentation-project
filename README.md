@@ -47,3 +47,237 @@ Pay special attention to what data the frontend is expecting from each API respo
 By making notes ahead of time, you will practice the core skill of being able to read and understand code and will have a simple plan to follow to build out the endpoints of your backend API.
 
 > View the [Frontend README](./frontend/README.md) for more details.
+## API Reference
+
+### Error Handling
+Errors are returned as JSON objects in the following format:
+
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+
+The API will return three error types when requests fail:
+
+- ERROR 400
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+- ERROR 404
+{
+    "success": False, 
+    "error": 404,
+    "message": "resource not found"
+}
+- ERROR 422: Not Processable 
+ {
+    "success": False, 
+    "error": 422,
+    "message": "unprocessable"
+}
+
+### API Endpoints
+#### GET /categories
+- Returns a categories in a dictionary as an object alongside that is the success value
+- Sample:  `curl http://127.0.0.1:5000/categories`
+{
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
+  "success": true
+}
+
+#### GET/questions
+- Returns list of categories as a dictonary, a list of questions, the current category, a success value and the total number of questions. Questions are paginated with 10 books being listed per page.
+- it includes a request argument to choose a page number
+- Sample:  `curl http://127.0.0.1:5000/questions?page=1`
+{
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
+  "current_category": "Varying",
+  "questions": [
+    {
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    },
+    {
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    },
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    },
+    {
+      "answer": "Muhammad Ali",
+      "category": 4,
+      "difficulty": 1,
+      "id": 9,
+      "question": "What boxer's original name is Cassius Clay?"
+    },
+    {
+      "answer": "Brazil",
+      "category": 6,
+      "difficulty": 3,
+      "id": 10,
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    },
+    {
+      "answer": "Uruguay",
+      "category": 6,
+      "difficulty": 4,
+      "id": 11,
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    },
+    {
+      "answer": "George Washington Carver",
+      "category": 4,
+      "difficulty": 2,
+      "id": 12,
+      "question": "Who invented Peanut Butter?"
+    },
+    {
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
+      "question": "What is the largest lake in Africa?"
+    },
+    {
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }
+  ],
+  "success": true,
+  "total_questions": 29
+
+#### DELETE/questions
+- Deletes a book and returns a success value
+- Sample:  `curl -X DELETE http://127.0.0.1:5000/questions/2`
+
+ {
+ "success": true
+ }
+
+#### POST/questions
+- Creates a new question in the database using submitted values excluding searchTerm which is used to search for questions.
+- It returns a success value
+- Sample:  `curl -X POST -H "Content-Type: applicaton/json" http://127.0.0.1:5000/questions -d '{"question":"Where was the last World Cup final held?","answer":"Russia","category":"6","difficulty":2}'`
+ {
+ "success": true
+ }
+
+#### POST/questions
+- Returns questions which contain the Search term
+- It returns a success value, a list of questions 
+- Sample:  `curl -X POST -H "Content-Type:application/json" http://127.0.0.1:5000/questions -d "{"searchTerm":"who"}" `
+{
+  "current_category": "Varying",
+  "questions": [
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "George Washington Carver",
+      "category": 4,
+      "difficulty": 2,
+      "id": 12,
+      "question": "Who invented Peanut Butter?"
+    },
+    {
+      "answer": "Alexander Fleming",
+      "category": 1,
+      "difficulty": 3,
+      "id": 21,
+      "question": "Who discovered penicillin?"
+    }
+  ],
+  "success": true,
+  "total_questions": 3
+}
+
+
+#### GET /categories/<category_id>/questions
+- Returns a list of questions with the specified category, a success value and the number of questions
+- Sample: `curl http://127.0.0.1:5000/categories/4/questions`
+{
+  "current_category": 4,
+  "questions": [
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "Muhammad Ali",
+      "category": 4,
+      "difficulty": 1,
+      "id": 9,
+      "question": "What boxer's original name is Cassius Clay?"
+    },
+    {
+      "answer": "George Washington Carver",
+      "category": 4,
+      "difficulty": 2,
+      "id": 12,
+      "question": "Who invented Peanut Butter?"
+    }
+  ],
+  "success": true,
+  "total_questions": 3
+}
+
+#### POST/quizzes
+- Retreives the previous questions from the submitted values and if a category is specified it is also retreived and provides a user with a question they have not tackled before
+- Sample:  `curl -X POST -H "Content-Type:application/json" http://127.0.0.1:5000/questions -d "{"previous_questions":[13], 'quiz_category': 'Geography'}" `
+{
+  "question": [
+    {
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }
+  ],
+  "success": true,
+}

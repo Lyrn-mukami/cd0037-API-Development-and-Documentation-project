@@ -1,3 +1,4 @@
+
 # Backend - Trivia API
 
 ## Setting up the Backend
@@ -22,7 +23,7 @@ pip install -r requirements.txt
 
 - [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross-origin requests from our frontend server.
 
-### Set up the Database
+### Set up the Database 
 
 With Postgres running, create a `trivia` database:
 
